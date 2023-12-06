@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model academicyears {
+  academicYear String    @id @db.VarChar(9)
+  frm          DateTime? @db.Date
+  till         DateTime? @db.Date
+  status       String?   @db.VarChar(45)
+}
+
+model stu_details {
+  Uid            Int                       @default(autoincrement()) @db.SmallInt
+  RollNo         String?                   @db.VarChar(8)
+  Name           String                    @db.VarChar(50)
+  Class          String                    @db.VarChar(15)
+  section        String?                   @default("%") @db.VarChar(20)
+  RoomNo         String?                   @default("%") @db.VarChar(5)
+  Pwd            String                    @default("123456") @db.VarChar(10)
+  Active         stu_details_Active?       @default(Y)
+  house          String?                   @default("%") @db.VarChar(10)
+  division       String?                   @default("%") @db.VarChar(15)
+  OpeningBal     Float?                    @default(0.00)
+  AmountPaid     Float?                    @default(0.00)
+  CurrBalance    Float?                    @default(0.00)
+  WeeklyLimit    Float?                    @default(0.00)
+  BuyingStatus   stu_details_BuyingStatus?
+  DisallowedBy   Int?                      @db.SmallInt
+  CreditLimit    Int?
+  disallowedTill DateTime?                 @db.Date
+  acaYear        String                    @db.VarChar(9)
+  transactions   transactions[]
+
+  @@id([Uid, acaYear])
+}
+
+model transactions {
+  batchId       Int          @default(0)
+  transactionID Int          @id @default(autoincrement())
+  Uid           Int          @db.SmallInt
+  Date          DateTime?    @db.DateTime(0)
+  commodityId   Int?         @default(0) @db.SmallInt
+  Particulars   String       @db.VarChar(75)
+  Quantity      Int?         @db.SmallInt
+  Place         String       @db.VarChar(20)
+  Amount        Float
+  AuthorisedBy  String       @db.VarChar(10)
+  acaYear       String?      @db.VarChar(9)
+  finYear       String?      @db.VarChar(9)
+  stu_details   stu_details? @relation(fields: [Uid, acaYear], references: [Uid, acaYear], onDelete: NoAction, map: "uid_fk4")
+
+  @@index([Uid, acaYear], map: "uid_fk4_idx")
+}
+
+enum stu_details_Active {
+  Y
+  N
+}
+
+enum stu_details_BuyingStatus {
+  T
+  F
+}
