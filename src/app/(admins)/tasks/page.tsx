@@ -17,8 +17,31 @@ export const metadata: Metadata = {
 
 // Simulate a database read for tasks.
 async function getTasks() {
-  const tasks = mockData
-  return z.array(taskSchema).parse(tasks)
+  // api call here
+  // id, title, label, status, priority
+  const tasks = await prisma?.transactions.findMany({
+    where: {
+      Uid: 16453
+
+    },
+    select: {
+      transactionID: true,
+      Particulars: true,
+      Place: true,
+      acaYear: true,
+      Quantity: true
+      
+    }
+  })
+  const vals = tasks?.map( t => ({
+    id: t.transactionID.toString(),
+    title: t.Particulars,
+    label: t.Place,
+    status: t.acaYear,
+    priority: t.Quantity.toString(),
+  }))
+
+  return z.array(taskSchema).parse(vals)
 }
 
 export default async function TaskPage() {
