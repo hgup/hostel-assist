@@ -5,6 +5,7 @@ import { Inter as FontSans } from "next/font/google"
 
 import { cn } from "@/lib/utils"
 import React from "react"
+import { UserNav } from "@/components/user-nav"
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -21,14 +22,24 @@ export default function RootLayout({
       <head />
       <body
         // setting max-h-screen was the right move here
-        className={cn("max-h-screen font-sans antialiased", fontSans.variable)}
+        className={cn(
+          "min-h-screen flex-1 flex-col font-sans antialiased",
+          fontSans.variable
+        )}
       >
         {/* never give margins to the body causes ui-shift when using dialogues, apply it to main instead */}
-
-        <nav>
-          <h1>Student @ SSSIHL</h1>
+        <nav className="m-5 p-5 flex items-center justify-between space-y-2">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight">
+              Teacher Admin Dashboard
+            </h2>
+            <p className="text-muted-foreground">Sairam</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <UserNav />
+          </div>
         </nav>
-        <div>{children}</div>
+        {children}
       </body>
     </html>
   )
