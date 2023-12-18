@@ -48,15 +48,18 @@ export default async function TaskPage() {
 
   return (
     <main className="flex flex-col md:m-5 p-3 md:p-5">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-1 items-center space-x-4">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-row min-w-full justify-between p-4 border-dotted border-gray-200 rounded-lg border-2 items-top  space-x-4 ">
+          <div className="flex flex-col">
+            <div>Hursh Gupta</div>
+            <div className="text-sm font-light">MPC</div>
+          </div>
           <Input
             placeholder="Filter tasks..."
-            value={1}
+            value={16053}
             // onChange={(event) => console.log("okay")}
             className="h-8 w-[150px] lg:w-[250px]"
           />
-          <div>Name of the student</div>
         </div>
       </div>
       <DataTable data={tasks} columns={columns} />
